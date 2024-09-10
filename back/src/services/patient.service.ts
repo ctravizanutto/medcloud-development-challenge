@@ -1,21 +1,25 @@
 import {Address, Patient} from "@prisma/client";
 import patientRepository from "../repositories/patient.repository.js";
 import {duplicatedEmailError} from "../errors/duplicate-email.error.js";
-import {exclude} from "../utils/prisma.utils.js";
 
-async function createPatient(params: CreatePatientParams) {
+async function createPatient(params: CreatePatientParams): Promise<Patient>  {
     await validateUniqueEmail(params.email)
 
     const { address, ...patientData } = params;
 
-    await patientRepository.create({
+    return await patientRepository.create({
         name: patientData.name,
         email: patientData.email,
         birthday: new Date(patientData.birthday),
+        // @ts-ignore
         address: {
             create: address,
         },
     })
+}
+
+async function listAllPatients(): Promise<Patient[]> {
+    return await patientRepository.listAll();
 }
 
 async function validateUniqueEmail(email: string) {
@@ -31,7 +35,8 @@ export type CreatePatientParams = Omit<Patient, "id" | "createdAt" | "updatedAt"
 }
 
 const patientService = {
-    createPatient
+    createPatient,
+    listAllPatients
 }
 
 export default patientService
