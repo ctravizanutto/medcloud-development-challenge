@@ -11,12 +11,12 @@ datasource db {
 }
 
 model Patient {
-  id       String   @id @default(uuid())
+  id       String    @id @default(uuid())
   name     String
   birthday DateTime
-  email    String   @unique
-  address  Address  @relation(fields: [addressId], references: [id])
-  addressId Int
+  email    String    @unique
+  address  Address[]
+  deleted  Boolean   @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -33,10 +33,11 @@ model Address {
   number        String
   neighborhood  String
   addressDetail String?
+  Patient       Patient @relation(fields: [patientId], references: [id])
+  patientId     String  @unique
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Patient   Patient[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("addresses")
 }

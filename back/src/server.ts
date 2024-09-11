@@ -1,6 +1,6 @@
-import app, {init} from "./app.ts";
+import app, {init} from "./app.js";
 
-const port = 3000
+const port = 8080
 
 init().then(() => {
     app.listen(port, () => {

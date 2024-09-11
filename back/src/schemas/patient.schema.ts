@@ -1,11 +1,17 @@
 import Joi from "joi";
-import {CreatePatientParams} from "../services/patient.service.js";
-import {addressSchema} from "./address.schema.js";
+import {AddressParams, addressSchema} from "./address.schema.js";
+import {Patient} from "@prisma/client";
 
+export type PatientParams = Omit<Patient, "id" | "createdAt" | "updatedAt"> & {
+    address: AddressParams
+}
+const createPramsFields = ["name", "email", "birthday", "address"]
 
-export const createPatientSchema = Joi.object<CreatePatientParams>({
-    name: Joi.string().required(),
-    email: Joi.string().email().required(),
-    birthday: Joi.string().isoDate().required(),
-    address: addressSchema.required()
+export const patientSchema = Joi.object<PatientParams>({
+    name: Joi.string(),
+    email: Joi.string().email(),
+    birthday: Joi.string().isoDate(),
+    address: addressSchema
 })
+
+export const createPatientSchema = patientSchema.fork(createPramsFields, field => field.required())

@@ -1,5 +1,8 @@
 import Joi from "joi";
 import {getStates, isValidCEP} from "@brazilian-utils/brazilian-utils";
+import {Address} from "@prisma/client";
+
+export type AddressParams = Omit<Address, "id" | "createdAt" | "updatedAt">
 
 const cepValidationSchema = Joi.string().length(9).custom(JoiCepValidation).required();
 export const addressSchema = Joi.object({
