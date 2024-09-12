@@ -20,15 +20,15 @@ export async function listAllPatients(req: Request, res: Response) {
     const patients = await patientService.listAllPatients(page, limit)
     return res.json({
         page: page,
-        hasNext: await hasNextPage(page, limit),
+        totalPages: await totalPages(limit),
         patients
     }).status(httpStatus.OK)
 }
 
-async function hasNextPage(page: number, limit: number): Promise<boolean> {
+async function totalPages(limit: number): Promise<number> {
     const total = await patientService.getPatientCount()
 
-    return total - limit > page * limit
+    return Math.ceil(total / limit)
 }
 
 export async function detailPatient(req: Request, res: Response) {
