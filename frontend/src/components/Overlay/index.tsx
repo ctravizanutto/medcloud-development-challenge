@@ -1,8 +1,9 @@
 import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
 import {useNavigate} from "react-router";
+import React from 'react'
 
 
-export default function Overlay({children}: any) {
+export default function Overlay({children}: { children: React.ReactNode }) {
     const navigate = useNavigate()
 
     return (
@@ -13,7 +14,7 @@ export default function Overlay({children}: any) {
                         <Typography onClick={() => navigate('/')} variant="h6" color="inherit" component="div" sx={{cursor: 'pointer'}}>
                             Medcloud
                         </Typography>
-                        {window.location.toString() === 'http://localhost:5173/' && (
+                        {window.location.toString() === import.meta.env.VITE_BASE_URL && (
                             <Button sx={{color: 'white', backgroundColor: '#007fff'}} onClick={() => navigate('/create')}>
                                 Novo Paciente
                             </Button>
