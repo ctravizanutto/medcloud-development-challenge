@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
 export const http = axios.default.create({
-    baseURL: 'http://localhost:8080/patient/'
+    baseURL: import.meta.env.VITE_BASE_URL
 })
 
 export const viaCep = axios.default.create({
