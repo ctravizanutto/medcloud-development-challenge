@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx tsx watch --env-file .env src/server.ts",
-    "build": "rimraf dist & npx tsc & npx prisma migrate dev & npx prisma generate",
+    "build": "npx tsc & npx prisma migrate dev & npx prisma generate",
     "prestart": "npm run build",
     "start": "node dist/server.js"
   },
