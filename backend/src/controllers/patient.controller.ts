@@ -8,7 +8,7 @@ export async function createPatient(req: Request, res: Response) {
         const patient = await patientService.createPatient({...req.body})
         return res.status(httpStatus.CREATED).json(patient)
     } catch (e) {
-        return res.send(e.message).status(httpStatus.BAD_REQUEST)
+        return res.status(httpStatus.BAD_REQUEST).send(e.message)
 
     }
 }
@@ -44,7 +44,7 @@ export async function detailPatient(req: Request, res: Response) {
             return res.sendStatus(httpStatus.NOT_FOUND)
         }
     } catch (e) {
-        return res.send(e.message).status(httpStatus.BAD_REQUEST)
+        return res.status(httpStatus.BAD_REQUEST).send(e.message)
     }
 
     return res.status(httpStatus.OK).json(patient)
@@ -65,7 +65,7 @@ export async function updatePatient(req: Request, res: Response) {
         const patient = patientService.update(patientId, params)
         return res.json(patient).status(httpStatus.ACCEPTED)
     } catch (e) {
-        res.send(e.message).status(httpStatus.BAD_REQUEST)
+        res.status(httpStatus.BAD_REQUEST).send(e.message)
     }
 }
 
@@ -79,6 +79,6 @@ export async function deletePatient(req: Request, res: Response) {
         await patientService.disable(patientId)
         return res.sendStatus(httpStatus.OK)
     } catch (e) {
-        res.send(e.message).status(httpStatus.BAD_REQUEST)
+        res.status(httpStatus.BAD_REQUEST).send(e.message)
     }
 }

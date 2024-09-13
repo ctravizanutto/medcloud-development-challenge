@@ -1,12 +1,13 @@
-import {Patient} from "../interfaces/patient.interface.ts";
+import {Patient} from "../../interfaces/patient.interface.ts";
 import {DataGrid, GridActionsCellItem, GridColDef} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
-import {http} from "../http";
-import {APIGetResponse} from "../interfaces/api.interfaces.ts";
+import {http} from "../../http";
+import {APIGetResponse} from "../../interfaces/api.interfaces.ts";
 import {HttpStatusCode} from "axios";
 import Paper from "@mui/material/Paper";
 import {Button} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {useNavigate} from "react-router";
 
 interface Page {
     isLoading: boolean,
@@ -16,7 +17,7 @@ interface Page {
 }
 
 
-export default function PatientDataTable() {
+export default function Index() {
     const [pageState, setPageState] = useState<Page>({
         isLoading: true,
         total: 0,
@@ -26,18 +27,20 @@ export default function PatientDataTable() {
 
     const [patients, setPatients] = useState<Patient[]>([])
 
+    const navigate = useNavigate()
+
     useEffect(() => {
-        setPageState(old => ({
-            ...old,
+        setPageState(prev => ({
+            ...prev,
             isLoading: true
         }));
-        http.get<APIGetResponse>(`/?page=${pageState.page}&limit=${pageState.pageSize}`)
+        http.get<APIGetResponse>(`?page=${pageState.page}&limit=${pageState.pageSize}`)
             .then((response) => {
                 console.log(response)
                 if (response.status == HttpStatusCode.Ok) {
-                    setPageState(old => (
+                    setPageState(prev => (
                         {
-                            ...old,
+                            ...prev,
                             total: response.data.totalPages,
                             isLoading: false,
                         }
@@ -55,21 +58,21 @@ export default function PatientDataTable() {
         {field: 'name', headerName: 'Name', width: 250},
         {field: 'email', headerName: 'Email', width: 200},
         {field: 'birthday', headerName: 'Birthday', type: 'date', width: 120},
-        {
-            field: 'address',
-            headerName: 'Address',
-            type: 'actions',
-            width: 120,
-            getActions: () => [
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => console.log('test')}
-                >
-                    Expand
-                </Button>
-            ]
-        },
+        // {
+        //     field: 'address',
+        //     headerName: 'Address',
+        //     type: 'actions',
+        //     width: 120,
+        //     getActions: () => [
+        //         <Button
+        //             variant="contained"
+        //             color="secondary"
+        //             onClick={() => console.log('test')}
+        //         >
+        //             Expand
+        //         </Button>
+        //     ]
+        // },
         {
             field: 'edit',
             type: 'actions',
@@ -79,7 +82,7 @@ export default function PatientDataTable() {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => console.log('test')}
+                    onClick={() => navigate(`/${params.id}`)}
                 >
                     Edit
                 </Button>,
@@ -98,9 +101,14 @@ export default function PatientDataTable() {
     ];
 
     return (
-        <Paper sx={{height: 'fit-content', width: 'fit-content'}}>
+        <Paper sx={{
+            width: '100%',
+            boxSizing: 'border-box',
+            height: '100%',
+            padding: '0 2%'
+        }}>
             <DataGrid
-                autoHeight
+
                 columns={columns}
                 rows={patients}
                 rowCount={pageState.total}
