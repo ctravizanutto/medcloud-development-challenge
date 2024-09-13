@@ -14,7 +14,7 @@ export default function Overlay({children}: { children: React.ReactNode }) {
                         <Typography onClick={() => navigate('/')} variant="h6" color="inherit" component="div" sx={{cursor: 'pointer'}}>
                             Medcloud
                         </Typography>
-                        {window.location.toString() === import.meta.env.VITE_BASE_URL && (
+                        {window.location.toString() === 'https://medcloud-development-challenge.vercel.app/' && (
                             <Button sx={{color: 'white', backgroundColor: '#007fff'}} onClick={() => navigate('/create')}>
                                 Novo Paciente
                             </Button>
