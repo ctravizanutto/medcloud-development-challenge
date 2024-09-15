@@ -6,9 +6,9 @@
   "scripts": {
     "test": "vitest",
     "dev": "npx tsx watch --env-file .env src/server.ts",
-    "build": "tsc & npx prisma generate",
+    "build": "npx prisma generate ; tsc",
     "prestart": "npm run build",
-    "start": "node ./dist/server.js"
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",

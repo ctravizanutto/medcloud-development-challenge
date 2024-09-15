@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
-import { createPatient, listAllPatients, detailPatient, updatePatient, deletePatient } from "../src/controllers/patient.controller.js";
+import { createPatient, listAllPatients, detailPatient, updatePatient, deletePatient } from "../controllers/patient.controller.js";
 import httpStatus from "http-status";
-import patientService from "../src/services/patient.service.js";
+import patientService from "../services/patient.service.js";
 
 // Mock patientService methods
 const mockCreatePatient = vi.spyOn(patientService, "createPatient");
