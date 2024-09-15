@@ -43,7 +43,7 @@ async function update(id: string, params: PatientParams): Promise<Patient> {
         await addressRepository.update(id, address)
     }
     if (params.email) {
-        await validateUniqueEmail(params.email)
+        await validateEmailById(params.email, id)
         await patientRepository.update(id, patientData)
     }
 
@@ -59,6 +59,13 @@ async function disable(id: string) {
 async function validateUniqueEmail(email: string) {
     const patient = await patientRepository.findByEmail(email)
     if (patient) {
+        throw duplicatedEmailError()
+    }
+}
+
+async function validateEmailById(email: string, id: string) {
+    const patient = await patientRepository.findByEmail(email)
+    if (patient && patient.id !== id) {
         throw duplicatedEmailError()
     }
 }

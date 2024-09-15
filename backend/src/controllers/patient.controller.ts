@@ -18,11 +18,12 @@ export async function listAllPatients(req: Request, res: Response) {
     const limit = +req.query.limit || 10
 
     const patients = await patientService.listAllPatients(page, limit)
-    return res.json({
+    return res.status(httpStatus.OK)
+        .json({
         page: page,
         totalPages: await totalPages(limit),
         patients
-    }).status(httpStatus.OK)
+    })
 }
 
 async function totalPages(limit: number): Promise<number> {
@@ -62,8 +63,8 @@ export async function updatePatient(req: Request, res: Response) {
     const params = {...req.body}
 
     try {
-        const patient = patientService.update(patientId, params)
-        return res.json(patient).status(httpStatus.ACCEPTED)
+        const patient = await patientService.update(patientId, params)
+        return res.status(httpStatus.ACCEPTED).json(patient)
     } catch (e) {
         res.status(httpStatus.BAD_REQUEST).send(e.message)
     }
