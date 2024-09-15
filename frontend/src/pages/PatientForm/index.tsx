@@ -111,7 +111,7 @@ export default function Index() {
                 }
             }
             toast.promise(
-                http.post('/', patient),
+                id ? http.put(`/${id}`, patient) : http.post('/', patient),
                 {
                     loading: 'Salvando...',
                     success: <b>Paciente enviando</b>,
